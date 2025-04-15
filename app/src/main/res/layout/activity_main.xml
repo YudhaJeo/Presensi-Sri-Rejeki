@@ -5,7 +5,8 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    android:background="@color/myBlue">
 
     <!-- Guideline 4% dari kiri -->
     <androidx.constraintlayout.widget.Guideline
@@ -31,12 +32,117 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.04" />
 
-    <!-- Guideline 6% dari bawah -->
+    <!-- Guideline 4% dari bawah -->
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guidelineBottom"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.96" />
+
+    <!-- Textview for Greeting -->
+    <TextView
+        android:id="@+id/tvHalo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/inter_semibold"
+        android:textColor="@color/white"
+        android:text="Hai, Jeo!"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="@+id/guidelineStart"
+        app:layout_constraintTop_toTopOf="@+id/guidelineTop" />
+
+    <!-- Textview for Greeting Message -->
+    <TextView
+        android:id="@+id/tvSapaan"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/inter_regular"
+        android:textColor="@color/white"
+        android:text="Mau presensi ya? Klik icon kamera dibawah ini ya!"
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="@+id/guidelineStart"
+        app:layout_constraintTop_toBottomOf="@+id/tvHalo" />
+
+    <View
+        android:id="@+id/whiteRoundedBg"
+        android:layout_width="match_parent"
+        android:layout_height="1000dp"
+        android:background="@drawable/white_rounded_bg"
+        android:layout_marginTop="20dp"
+        app:layout_constraintTop_toBottomOf="@id/tvSapaan"/>
+
+    <!-- TextView for "Riwayat Presensi" -->
+    <TextView
+        android:id="@+id/tvPresensi"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/inter_semibold"
+        android:textColor="@color/myDarkGray"
+        android:gravity="center"
+        android:text="Riwayat Presensi"
+        android:textSize="16sp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="@id/guidelineEnd"
+        app:layout_constraintStart_toStartOf="@id/guidelineStart"
+        app:layout_constraintTop_toTopOf="@id/whiteRoundedBg" />
+
+    <ImageView
+        android:id="@+id/ivQr"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="-120dp"
+        android:layout_marginBottom="-80dp"
+        android:alpha="0.05"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:srcCompat="@drawable/qr_icon" />
+
+    <!-- Divider Line -->
+    <View
+        android:id="@+id/divider"
+        android:layout_width="0dp"
+        android:layout_height="1.5dp"
+        android:layout_marginTop="10dp"
+        android:background="@color/myDarkGray"
+        app:layout_constraintTop_toBottomOf="@id/tvPresensi"
+        app:layout_constraintStart_toStartOf="@id/guidelineStart"
+        app:layout_constraintEnd_toEndOf="@id/guidelineEnd" />
+
+    <!-- RecyclerView for Presensi History -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvRiwayatPresensi"
+        android:layout_width="0dp"
+        android:layout_height="600dp"
+        android:layout_marginTop="10dp"
+        tools:listitem="@layout/item_riwayat_presensi"
+        app:layout_constraintTop_toBottomOf="@id/divider"
+        app:layout_constraintStart_toStartOf="@id/guidelineStart"
+        app:layout_constraintEnd_toEndOf="@id/guidelineEnd" />
+
+    <ImageView
+        android:id="@+id/ivBottomBar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/whiteRoundedBg"
+        app:srcCompat="@drawable/bottom_bg"
+        android:layout_marginBottom="-10dp"/>
+
+    <ImageView
+        android:id="@+id/ivButtonScan"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/whiteRoundedBg"
+        app:srcCompat="@drawable/scan_button"
+        android:layout_marginBottom="-10dp"/>
+
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
