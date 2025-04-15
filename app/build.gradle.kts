@@ -44,6 +44,7 @@ android {
 }
 
 dependencies {
+    val cameraxVersion = "1.3.0"
     // Default
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
@@ -53,6 +54,14 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
+    // Camera
+    implementation(libs.androidx.camera.view)
+    implementation("androidx.camera:camera-core:$cameraxVersion")
+    implementation("androidx.camera:camera-camera2:$cameraxVersion")
+    implementation("androidx.camera:camera-lifecycle:$cameraxVersion")
+    implementation("androidx.camera:camera-view:$cameraxVersion")
+    implementation("androidx.camera:camera-extensions:$cameraxVersion")
 
     // Firebase Realtime Database
     implementation("com.google.firebase:firebase-database-ktx:20.1.0")
