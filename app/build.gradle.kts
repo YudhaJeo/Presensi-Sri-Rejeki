@@ -1,6 +1,9 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
+
+    // Google services
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -36,6 +39,7 @@ android {
 }
 
 dependencies {
+    // Default
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
@@ -44,4 +48,7 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
+    // Firebase Realtime Database
+    implementation("com.google.firebase:firebase-database-ktx:20.1.0")
 }
