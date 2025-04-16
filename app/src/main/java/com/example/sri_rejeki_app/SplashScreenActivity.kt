@@ -3,8 +3,8 @@ package com.example.sri_rejeki_app
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
-import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import com.example.sri_rejeki_app.Login.LoginActivity
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 

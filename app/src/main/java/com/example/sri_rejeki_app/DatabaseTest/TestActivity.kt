@@ -1,9 +1,7 @@
-package com.example.sri_rejeki_app
+package com.example.sri_rejeki_app.DatabaseTest
 
-import android.os.Binder
 import android.os.Bundle
 import android.util.Log
-import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import com.example.sri_rejeki_app.databinding.ActivityTestBinding
 import com.google.firebase.FirebaseApp

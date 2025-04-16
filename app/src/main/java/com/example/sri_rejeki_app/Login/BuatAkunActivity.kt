@@ -1,4 +1,4 @@
-package com.example.sri_rejeki_app
+package com.example.sri_rejeki_app.Login
 
 import android.content.Intent
 import android.os.Bundle

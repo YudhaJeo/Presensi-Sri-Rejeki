@@ -1,10 +1,11 @@
-package com.example.sri_rejeki_app
+package com.example.sri_rejeki_app.Login
 
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.sri_rejeki_app.MainActivity
 import com.example.sri_rejeki_app.databinding.ActivityLoginBinding
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
