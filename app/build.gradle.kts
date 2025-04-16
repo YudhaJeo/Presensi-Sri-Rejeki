@@ -85,4 +85,7 @@ dependencies {
 
     // Firebase BoM (biar semua versi Firebase sinkron)
     implementation(platform("com.google.firebase:firebase-bom:32.7.4"))
+
+    // Library untuk Fused Location Provider
+    implementation ("com.google.android.gms:play-services-location:21.0.1")
 }
