@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.example.sri_rejeki_app.Login.BuatAkunActivity
 import com.example.sri_rejeki_app.MainActivity
 import com.example.sri_rejeki_app.databinding.ActivityLoginBinding
 import com.google.firebase.database.*
@@ -39,14 +38,23 @@ class LoginActivity : AppCompatActivity() {
                         for (userSnapshot in snapshot.children) {
                             val dbPassword = userSnapshot.child("password").getValue(String::class.java)
                             if (password == dbPassword) {
+
+                                // Ambil data tambahan (misalnya email dan fullName)
+                                val email = userSnapshot.child("email").getValue(String::class.java)
+                                val fullName = userSnapshot.child("fullName").getValue(String::class.java)
+
+                                // Simpan sesi login lengkap ke SharedPreferences
+                                val sharedPref = getSharedPreferences("user_session", MODE_PRIVATE)
+                                sharedPref.edit()
+                                    .putString("username", username)
+                                    .putString("email", email)
+                                    .putString("fullName", fullName)
+                                    .apply()
+
                                 Toast.makeText(this@LoginActivity, "Login berhasil", Toast.LENGTH_SHORT).show()
 
-                                // Simpan sesi login
-                                val sharedPref = getSharedPreferences("user_session", MODE_PRIVATE)
-                                sharedPref.edit().putString("username", username).apply()
-
-                                val intent = Intent(this@LoginActivity, MainActivity::class.java)
-                                startActivity(intent)
+                                // Pindah ke MainActivity
+                                startActivity(Intent(this@LoginActivity, MainActivity::class.java))
                                 finish()
                             } else {
                                 Toast.makeText(this@LoginActivity, "Password salah", Toast.LENGTH_SHORT).show()
@@ -76,12 +84,10 @@ class LoginActivity : AppCompatActivity() {
         val sharedPref = getSharedPreferences("user_session", MODE_PRIVATE)
         val savedUsername = sharedPref.getString("username", null)
 
-        if (savedUsername != null) {
-            // Sesi masih ada, langsung ke MainActivity
-            val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
+        if (!savedUsername.isNullOrEmpty()) {
+            // Jika sesi login masih ada, langsung ke MainActivity
+            startActivity(Intent(this, MainActivity::class.java))
             finish()
         }
     }
-
 }

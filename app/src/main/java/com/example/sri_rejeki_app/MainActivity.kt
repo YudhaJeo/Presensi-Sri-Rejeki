@@ -14,6 +14,13 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var firebaseAuth: FirebaseAuth
 
+//    Data karyawan dari Login
+    val sharedPref = getSharedPreferences("user_session", MODE_PRIVATE)
+    val username = sharedPref.getString("username", "")
+    val email = sharedPref.getString("email", "")
+    val fullName = sharedPref.getString("fullName", "")
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
