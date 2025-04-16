@@ -38,7 +38,6 @@ class LoginActivity : AppCompatActivity() {
                         for (userSnapshot in snapshot.children) {
                             val dbPassword = userSnapshot.child("password").getValue(String::class.java)
                             if (password == dbPassword) {
-
                                 // Ambil data tambahan (misalnya email dan fullName)
                                 val email = userSnapshot.child("email").getValue(String::class.java)
                                 val fullName = userSnapshot.child("fullName").getValue(String::class.java)
