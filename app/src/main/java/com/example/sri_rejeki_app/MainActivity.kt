@@ -1,9 +1,11 @@
 package com.example.sri_rejeki_app
 
+import PresensiAdapter
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentTransaction
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.sri_rejeki_app.Login.LoginActivity
 import com.example.sri_rejeki_app.databinding.ActivityMainBinding
 import com.example.sri_rejeki_app.Fragment.CameraFragment
@@ -14,6 +16,10 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var firebaseAuth: FirebaseAuth
+
+//    Prepare Recycle View
+    private lateinit var presensiAdapter: PresensiAdapter
+    private val listPresensi = mutableListOf<Presensi>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,6 +34,13 @@ class MainActivity : AppCompatActivity() {
         // Set nama user
         val username = sharedPref.getString("username", "User")
         binding.tvHalo.text = "Hai, $username!"
+
+        // Setup RecyclerView
+        binding.rvRiwayatPresensi.layoutManager = LinearLayoutManager(this)
+        presensiAdapter = PresensiAdapter(listPresensi)
+        binding.rvRiwayatPresensi.adapter = presensiAdapter
+
+        loadPresensiFromFirebase(username.toString())
 
         // Kamera Fragment
         binding.ivButtonScan.setOnClickListener {
@@ -47,6 +60,25 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
             finish()
         }
+    }
+
+    private fun loadPresensiFromFirebase(username: String) {
+        val ref = FirebaseDatabase.getInstance().getReference("presensi")
+        ref.orderByChild("username").equalTo(username)
+            .addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    listPresensi.clear()
+                    for (data in snapshot.children) {
+                        val item = data.getValue(Presensi::class.java)
+                        item?.let { listPresensi.add(it) }
+                    }
+                    presensiAdapter.notifyDataSetChanged()
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    // Log error
+                }
+            })
     }
 }
 

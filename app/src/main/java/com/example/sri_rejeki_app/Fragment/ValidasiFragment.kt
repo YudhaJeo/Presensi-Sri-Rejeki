@@ -30,7 +30,7 @@ class ValidasiFragment : Fragment() {
 
     // Lokasi tujuan (misalnya kantor atau lokasi absensi) -7.646193, 111.527312
     private val targetLatitude = -7.646193 // Ganti dengan latitude yang sesuai
-    private val targetLongitude = 111.527312 // Ganti dengan longitude yang sesuai
+    private val targetLongitude = 101.527312 // Ganti dengan longitude yang sesuai
     private val radius = 30 // radius dalam meter
 
     override fun onCreateView(
@@ -45,9 +45,6 @@ class ValidasiFragment : Fragment() {
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext())
 
-        binding.backBtn.setOnClickListener {
-            requireActivity().supportFragmentManager.popBackStack()
-        }
 
         binding.btnKirim.setOnClickListener {
             validasiLokasi()

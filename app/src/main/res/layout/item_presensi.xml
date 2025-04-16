@@ -6,7 +6,7 @@
     android:layout_marginVertical="1dp">
 
     <TextView
-        android:id="@+id/tvStatusPresensi"
+        android:id="@+id/tvStatus"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="Presensi Masuk"
@@ -32,3 +32,4 @@
         app:layout_constraintBottom_toBottomOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+
