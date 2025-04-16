@@ -45,9 +45,16 @@ class ValidasiFragment : Fragment() {
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext())
 
-        binding.backBtn.setOnClickListener {
-            requireActivity().supportFragmentManager.popBackStack()
-        }
+        val sharedPref = requireActivity().getSharedPreferences("user_session", android.content.Context.MODE_PRIVATE)
+        val username = sharedPref.getString("username", "User") // Default "User" kalau null
+
+        // Set sapaan
+        binding.tvSapa.text = "Hai, $username!"
+
+        // Set waktu saat ini
+        val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
+        val waktu = sdf.format(Date())
+        binding.tvTime.text = waktu
 
         binding.btnKirim.setOnClickListener {
             validasiLokasi()
@@ -103,7 +110,7 @@ class ValidasiFragment : Fragment() {
         val dataPresensi = mapOf(
             "username" to username,
             "waktu" to timestamp,
-            "jenis_presensi" to "sore"
+            "jenis_presensi" to "Presensi Berhasil"
         )
 
         FirebaseDatabase.getInstance().getReference("presensi")
