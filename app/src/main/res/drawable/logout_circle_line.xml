@@ -1,0 +1,13 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+  <group>
+    <clip-path
+        android:pathData="M0,0h24v24h-24z"/>
+    <path
+        android:pathData="M5,11H13V13H5V16L0,12L5,8V11ZM4,18H6.708C7.863,19.018 9.287,19.682 10.809,19.911C12.332,20.14 13.888,19.925 15.291,19.292C16.694,18.658 17.885,17.633 18.72,16.34C19.555,15.047 20,13.54 20,12C20,10.46 19.555,8.954 18.72,7.66C17.885,6.367 16.694,5.342 15.291,4.708C13.888,4.075 12.332,3.86 10.809,4.089C9.287,4.318 7.863,4.982 6.708,6H4C4.931,4.757 6.138,3.749 7.527,3.054C8.916,2.36 10.447,1.999 12,2C17.523,2 22,6.477 22,12C22,17.523 17.523,22 12,22C10.447,22.001 8.916,21.64 7.527,20.946C6.138,20.251 4.931,19.243 4,18Z"
+        android:fillColor="@color/common_google_signin_btn_text_dark_pressed"/>
+  </group>
+</vector>

@@ -5,17 +5,13 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.sri_rejeki_app.Login.BuatAkunActivity
 import com.example.sri_rejeki_app.MainActivity
 import com.example.sri_rejeki_app.databinding.ActivityLoginBinding
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.*
 
 class LoginActivity : AppCompatActivity() {
 
-    // Inisialisasi View Binding dan Firebase Database Reference
     private lateinit var binding: ActivityLoginBinding
     private lateinit var database: DatabaseReference
 
@@ -24,31 +20,31 @@ class LoginActivity : AppCompatActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Inisialisasi Firebase Realtime Database
+        // Inisialisasi Firebase
         database = FirebaseDatabase.getInstance().reference
 
-        // Tombol Login ditekan
         binding.btnLogin.setOnClickListener {
             val username = binding.etUsername.text.toString().trim()
             val password = binding.etPassword.text.toString().trim()
 
-            // Validasi input agar tidak kosong
             if (username.isEmpty() || password.isEmpty()) {
                 Toast.makeText(this, "Harap isi username dan password", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
-            // Query untuk mencari user berdasarkan username
             val query = database.child("users").orderByChild("username").equalTo(username)
             query.addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     if (snapshot.exists()) {
-                        // Asumsikan username bersifat unik, sehingga hanya ada satu data
                         for (userSnapshot in snapshot.children) {
                             val dbPassword = userSnapshot.child("password").getValue(String::class.java)
                             if (password == dbPassword) {
                                 Toast.makeText(this@LoginActivity, "Login berhasil", Toast.LENGTH_SHORT).show()
-                                // Navigasi ke MainActivity jika login benar
+
+                                // Simpan sesi login
+                                val sharedPref = getSharedPreferences("user_session", MODE_PRIVATE)
+                                sharedPref.edit().putString("username", username).apply()
+
                                 val intent = Intent(this@LoginActivity, MainActivity::class.java)
                                 startActivity(intent)
                                 finish()
@@ -68,10 +64,24 @@ class LoginActivity : AppCompatActivity() {
             })
         }
 
-        // Trigger pindah ke halaman Create New Account
         binding.tvCreateAccount.setOnClickListener {
             val intent = Intent(this, BuatAkunActivity::class.java)
             startActivity(intent)
         }
     }
+
+    override fun onStart() {
+        super.onStart()
+
+        val sharedPref = getSharedPreferences("user_session", MODE_PRIVATE)
+        val savedUsername = sharedPref.getString("username", null)
+
+        if (savedUsername != null) {
+            // Sesi masih ada, langsung ke MainActivity
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
+    }
+
 }

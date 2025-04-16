@@ -47,10 +47,8 @@ android {
 }
 
 dependencies {
-implementation(libs.androidx.navigation.fragment.ktx)
-    implementation(libs.androidx.navigation.ui.ktx)
-    //    implementation(libs.firebase.database)
     val cameraxVersion = "1.3.0"
+
     // Default
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
@@ -60,6 +58,10 @@ implementation(libs.androidx.navigation.fragment.ktx)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
+    // Implementation (libs.firebase.database)
+    implementation(libs.androidx.navigation.fragment.ktx)
+    implementation(libs.androidx.navigation.ui.ktx)
 
     // Camera
     implementation(libs.androidx.camera.view)
@@ -75,4 +77,12 @@ implementation(libs.androidx.navigation.fragment.ktx)
     //Splash Screen
     implementation("androidx.core:core-splashscreen:1.0.1")
 
+    // ML Kit barcode scanner
+    implementation ("com.google.mlkit:barcode-scanning:17.2.0")
+
+    // Firebase Authentication
+    implementation("com.google.firebase:firebase-auth:22.3.0")
+
+    // Firebase BoM (biar semua versi Firebase sinkron)
+    implementation(platform("com.google.firebase:firebase-bom:32.7.4"))
 }
