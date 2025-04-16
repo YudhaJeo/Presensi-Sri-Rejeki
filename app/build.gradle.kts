@@ -35,15 +35,21 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "11"
+    }
+    buildFeatures {
+        viewBinding = true
     }
 }
 
 dependencies {
+implementation(libs.androidx.navigation.fragment.ktx)
+    implementation(libs.androidx.navigation.ui.ktx)
+    //    implementation(libs.firebase.database)
     val cameraxVersion = "1.3.0"
     // Default
     implementation(libs.androidx.core.ktx)
@@ -65,4 +71,8 @@ dependencies {
 
     // Firebase Realtime Database
     implementation("com.google.firebase:firebase-database-ktx:20.1.0")
+
+    //Splash Screen
+    implementation("androidx.core:core-splashscreen:1.0.1")
+
 }

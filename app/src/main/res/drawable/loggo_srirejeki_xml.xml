@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@android:color/white" /> <!-- Background putih -->
+    <item>
+        <bitmap
+            android:src="@drawable/loggo_srirejeki"
+            android:gravity="center"
+            android:scaleType="fitCenter" /> <!-- Menyesuaikan ukuran gambar agar pas -->
+    </item>
+</layer-list>

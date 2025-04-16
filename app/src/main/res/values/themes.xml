@@ -8,4 +8,18 @@
     </style>
 
     <style name="Theme.SriRejekiApp" parent="Base.Theme.SriRejekiApp" />
+
+    <style name="Theme.MyApp.Splash" parent="Theme.SplashScreen">
+        <!-- Background warna -->
+        <item name="windowSplashScreenBackground">#FFF</item>
+
+        <!-- Icon animasi saat splash -->
+        <item name="windowSplashScreenAnimatedIcon">@drawable/loggo_srirejeki</item>
+
+        <!-- Durasi animasi -->
+        <item name="windowSplashScreenAnimationDuration">10000</item>
+
+        <!-- Setelah selesai, pakai tema utama -->
+        <item name="postSplashScreenTheme">@style/Theme.SriRejekiApp</item>
+    </style>
 </resources>
