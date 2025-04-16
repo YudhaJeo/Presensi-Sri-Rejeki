@@ -4,9 +4,6 @@
     <!-- Permission -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-
 
     <uses-feature android:name="android.hardware.camera" />
 
@@ -40,7 +37,7 @@
             android:name=".DatabaseTest.TestActivity"
             android:exported="false" />
         <activity
-            android:name="MainActivity"
+            android:name=".MainActivity"
             android:exported="false" />
 
         <meta-data

@@ -14,6 +14,7 @@
         android:layout_height="24dp"
         android:contentDescription="Back"
         android:src="@drawable/logout_circle_line"
+        app:layout_constraintBottom_toBottomOf="@+id/tvHalo"
         app:layout_constraintEnd_toStartOf="@+id/guidelineEnd"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="@id/guidelineTop" />
@@ -40,7 +41,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.04" />
+        app:layout_constraintGuide_percent="0.02" />
 
     <!-- Guideline 4% dari bawah -->
     <androidx.constraintlayout.widget.Guideline

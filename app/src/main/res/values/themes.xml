@@ -1,25 +1,3 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Base.Theme.SriRejekiApp" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
-        <item name="android:statusBarColor">@color/myBlue</item>
-        <item name="android:windowLightStatusBar">true</item>
-    </style>
-
-    <style name="Theme.SriRejekiApp" parent="Base.Theme.SriRejekiApp" />
-
-    <style name="Theme.MyApp.Splash" parent="Theme.SplashScreen">
-        <!-- Background warna -->
-        <item name="windowSplashScreenBackground">#FFF</item>
-
-        <!-- Icon animasi saat splash -->
-        <item name="windowSplashScreenAnimatedIcon">@drawable/loggo_srirejeki</item>
-
-        <!-- Durasi animasi -->
-        <item name="windowSplashScreenAnimationDuration">10000</item>
-
-        <!-- Setelah selesai, pakai tema utama -->
-        <item name="postSplashScreenTheme">@style/Theme.SriRejekiApp</item>
-    </style>
 </resources>
