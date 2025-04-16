@@ -1,6 +1,7 @@
 package com.example.sri_rejeki_app.Fragment
 
 import android.Manifest
+import android.app.AlertDialog
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
@@ -12,6 +13,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import com.example.sri_rejeki_app.databinding.DialogLokasiTidakValidBinding
 import com.example.sri_rejeki_app.databinding.FragmentValidasiBinding
 import com.google.firebase.database.FirebaseDatabase
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -71,7 +73,7 @@ class ValidasiFragment : Fragment() {
                         kirimPresensi()
                     } else {
                         // Lokasi tidak valid, tampilkan Toast
-                        Toast.makeText(requireContext(), "Lokasi perangkat terlalu jauh, harus dalam radius 30 meter", Toast.LENGTH_SHORT).show()
+                        showCustomLocationDialog(distance)
                     }
                 } else {
                     Toast.makeText(requireContext(), "Gagal mendapatkan lokasi perangkat", Toast.LENGTH_SHORT).show()
@@ -90,6 +92,8 @@ class ValidasiFragment : Fragment() {
     }
 
     private fun kirimPresensi() {
+        showLoading(true)
+
         val sharedPref = requireActivity().getSharedPreferences("user_session", android.content.Context.MODE_PRIVATE)
         val username = sharedPref.getString("username", "unknown")
 
@@ -106,6 +110,8 @@ class ValidasiFragment : Fragment() {
             .push()
             .setValue(dataPresensi)
             .addOnSuccessListener {
+                showLoading(false)
+
                 Log.d("ValidasiFragment", "Presensi berhasil dikirim")
                 Toast.makeText(requireContext(), "Presensi berhasil dikirim", Toast.LENGTH_SHORT).show()
 
@@ -113,7 +119,31 @@ class ValidasiFragment : Fragment() {
                 requireActivity().supportFragmentManager.popBackStack(null, androidx.fragment.app.FragmentManager.POP_BACK_STACK_INCLUSIVE)
             }
             .addOnFailureListener {
+                showLoading(false)
+
                 Log.e("ValidasiFragment", "Gagal mengirim presensi", it)
             }
     }
+
+    private fun showCustomLocationDialog(distance: Float) {
+        val bindingDialog = DialogLokasiTidakValidBinding.inflate(LayoutInflater.from(requireContext()))
+        val dialog = AlertDialog.Builder(requireContext()).setView(bindingDialog.root).create()
+
+        bindingDialog.tvDialogMessage.text =
+            "Anda berada di luar radius absensi.\nJarak saat ini: ${"%.2f".format(distance)} meter."
+
+        bindingDialog.btnDialogOK.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+        dialog.show()
+    }
+
+    private fun showLoading(isLoading: Boolean) {
+        binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
+    }
+
+
+
 }
