@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity"
+    tools:context="MainActivity"
     android:background="@color/myBlue">
 
     <ImageView
@@ -57,7 +57,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/inter_semibold"
         android:textColor="@color/white"
-        android:text="Hai, Jeo!"
+        android:text="Hai, User!"
         android:textSize="24sp"
         app:layout_constraintStart_toStartOf="@+id/guidelineStart"
         app:layout_constraintTop_toTopOf="@+id/guidelineTop" />
@@ -114,7 +114,7 @@
         android:layout_width="0dp"
         android:layout_height="1.5dp"
         android:layout_marginTop="10dp"
-        android:background="@color/myDarkGray"
+        android:background="@color/myBlue"
         app:layout_constraintTop_toBottomOf="@id/tvPresensi"
         app:layout_constraintStart_toStartOf="@id/guidelineStart"
         app:layout_constraintEnd_toEndOf="@id/guidelineEnd" />
@@ -123,22 +123,25 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvRiwayatPresensi"
         android:layout_width="0dp"
-        android:layout_height="600dp"
+        android:layout_height="0dp"
         android:layout_marginTop="10dp"
-        tools:listitem="@layout/item_riwayat_presensi"
+        tools:listitem="@layout/item_presensi"
         app:layout_constraintTop_toBottomOf="@id/divider"
         app:layout_constraintStart_toStartOf="@id/guidelineStart"
-        app:layout_constraintEnd_toEndOf="@id/guidelineEnd" />
+        app:layout_constraintEnd_toEndOf="@id/guidelineEnd"
+        app:layout_constraintBottom_toTopOf="@+id/ivBottomBar" />
 
-    <ImageView
+
+    <View
         android:id="@+id/ivBottomBar"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        android:background="@color/white"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintStart_toStartOf="@+id/whiteRoundedBg"
-        app:srcCompat="@drawable/bottom_bg"
+        app:srcCompat="@drawable/bottom"
         android:layout_marginBottom="-10dp"/>
 
     <ImageView
@@ -149,8 +152,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintStart_toStartOf="@+id/whiteRoundedBg"
-        app:srcCompat="@drawable/scan_button"
-        android:layout_marginBottom="-10dp"/>
+        app:srcCompat="@drawable/cam_button"
+        android:layout_marginBottom="10dp"/>
 
     <FrameLayout
         android:id="@+id/camera_fragment"
