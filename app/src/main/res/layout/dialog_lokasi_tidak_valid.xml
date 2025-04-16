@@ -10,7 +10,7 @@
         android:layout_width="64dp"
         android:layout_height="64dp"
         android:layout_gravity="center_horizontal"
-        android:src="@drawable/loggo_srirejeki"
+        android:src="@drawable/loggo_lokasi"
         android:contentDescription="Warning Icon" />
 
     <TextView

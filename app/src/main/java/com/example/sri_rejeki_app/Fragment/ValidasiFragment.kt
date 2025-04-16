@@ -30,7 +30,7 @@ class ValidasiFragment : Fragment() {
 
     // Lokasi tujuan (misalnya kantor atau lokasi absensi) -7.646193, 111.527312
     private val targetLatitude = -7.646193 // Ganti dengan latitude yang sesuai
-    private val targetLongitude = 101.527312 // Ganti dengan longitude yang sesuai
+    private val targetLongitude = 111.527312 // Ganti dengan longitude yang sesuai
     private val radius = 30 // radius dalam meter
 
     override fun onCreateView(
@@ -45,6 +45,16 @@ class ValidasiFragment : Fragment() {
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext())
 
+        val sharedPref = requireActivity().getSharedPreferences("user_session", android.content.Context.MODE_PRIVATE)
+        val username = sharedPref.getString("username", "User") // Default "User" kalau null
+
+        // Set sapaan
+        binding.tvSapa.text = "Hai, $username!"
+
+        // Set waktu saat ini
+        val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
+        val waktu = sdf.format(Date())
+        binding.tvTime.text = waktu
 
         binding.btnKirim.setOnClickListener {
             validasiLokasi()
@@ -100,7 +110,7 @@ class ValidasiFragment : Fragment() {
         val dataPresensi = mapOf(
             "username" to username,
             "waktu" to timestamp,
-            "jenis_presensi" to "sore"
+            "jenis_presensi" to "Presensi Berhasil"
         )
 
         FirebaseDatabase.getInstance().getReference("presensi")
