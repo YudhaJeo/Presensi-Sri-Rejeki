@@ -142,11 +142,7 @@ class ValidasiFragment : Fragment() {
                     .setValue(dataPresensi)
                     .addOnSuccessListener {
                         showLoading(false)
-                        Toast.makeText(requireContext(), "Presensi berhasil dikirim", Toast.LENGTH_SHORT).show()
-                        requireActivity().supportFragmentManager.popBackStack(
-                            null,
-                            androidx.fragment.app.FragmentManager.POP_BACK_STACK_INCLUSIVE
-                        )
+                        showSuccessCheckInDialogAndClose()
                     }
                     .addOnFailureListener {
                         showLoading(false)
@@ -191,6 +187,35 @@ class ValidasiFragment : Fragment() {
     private fun showLoading(isLoading: Boolean) {
         binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
     }
+
+    private fun showSuccessCheckInDialogAndClose() {
+        val bindingDialog = com.example.sri_rejeki_app.databinding.DialogBerhasilPresensiBinding.inflate(LayoutInflater.from(requireContext()))
+        val dialog = AlertDialog.Builder(requireContext()).setView(bindingDialog.root).create()
+
+        bindingDialog.btnDialogOK.setOnClickListener {
+            dialog.dismiss()
+            // Tutup semua fragment langsung jika user pencet OK
+            requireActivity().supportFragmentManager.popBackStack(
+                null,
+                androidx.fragment.app.FragmentManager.POP_BACK_STACK_INCLUSIVE
+            )
+        }
+
+        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+        dialog.show()
+
+        // Tutup otomatis setelah 3 detik
+        android.os.Handler().postDelayed({
+            if (dialog.isShowing) {
+                dialog.dismiss()
+            }
+            requireActivity().supportFragmentManager.popBackStack(
+                null,
+                androidx.fragment.app.FragmentManager.POP_BACK_STACK_INCLUSIVE
+            )
+        }, 2000)
+    }
+
 
 
 
