@@ -88,4 +88,7 @@ dependencies {
 
     // Library untuk Fused Location Provider
     implementation ("com.google.android.gms:play-services-location:21.0.1")
+
+    // Material Compose
+    implementation("com.google.android.material:material:1.11.0")
 }
