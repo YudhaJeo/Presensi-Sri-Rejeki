@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="300dp"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_dialod_lokasi_tidak_valid"
+    android:orientation="vertical"
+    android:padding="24dp">
+
+    <ImageView
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_gravity="center_horizontal"
+        android:src="@drawable/loggo_sudah_presensi"
+        android:contentDescription="Presensi Icon" />
+
+    <TextView
+        android:id="@+id/tvDialogTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Anda Sudah Presensi "
+        android:textAlignment="center"
+        android:textColor="@android:color/black"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:layout_marginTop="12dp" />
+    <TextView
+        android:id="@+id/tvDialogTitle2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Hari Ini! "
+        android:textAlignment="center"
+        android:textColor="@android:color/black"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+
+
+    <Button
+        android:id="@+id/btnDialogOK"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Mengerti"
+        android:backgroundTint="@color/myBlue"
+        android:textColor="@android:color/white"
+        android:layout_marginTop="16dp" />
+</LinearLayout>
