@@ -45,6 +45,28 @@
             android:padding="12dp" />
     </com.google.android.material.textfield.TextInputLayout>
 
+    <!-- Input FULl nama -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilFullname"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/tilEmail"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp"
+        app:boxStrokeColor="@color/myBlue"
+        app:hintTextColor="@color/myDarkGray"
+        app:boxBackgroundMode="outline">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etFullName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Full Name"
+            android:inputType="textEmailAddress"
+            android:padding="12dp" />
+    </com.google.android.material.textfield.TextInputLayout>
+
     <!-- Input Email -->
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/tilEmail"
@@ -72,7 +94,7 @@
         android:id="@+id/tilNewPassword"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/tilEmail"
+        app:layout_constraintTop_toBottomOf="@id/tilFullname"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="16dp"
