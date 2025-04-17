@@ -3,6 +3,7 @@ package com.example.sri_rejeki_app
 import PresensiAdapter
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -27,6 +28,9 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        //        animasi loading
+//        showLoading(true)
+
         firebaseAuth = FirebaseAuth.getInstance()
 
         val sharedPref = getSharedPreferences("user_session", MODE_PRIVATE)
@@ -41,6 +45,7 @@ class MainActivity : AppCompatActivity() {
         binding.rvRiwayatPresensi.adapter = presensiAdapter
 
         loadPresensiFromFirebase(fullname.toString())
+        showLoading(false)
 
         // Kamera Fragment
         binding.ivButtonScan.setOnClickListener {
@@ -73,12 +78,19 @@ class MainActivity : AppCompatActivity() {
                         item?.let { listPresensi.add(it) }
                     }
                     presensiAdapter.notifyDataSetChanged()
+//                    showLoading(false) // <--- pindahkan ke sini
                 }
 
                 override fun onCancelled(error: DatabaseError) {
-                    // Log error
+//                    showLoading(false) // tetap jaga ini juga
                 }
             })
+    }
+
+
+    //    Progress bar
+    private fun showLoading(isLoading: Boolean) {
+        binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
     }
 }
 

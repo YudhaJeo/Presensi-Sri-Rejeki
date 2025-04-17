@@ -1,6 +1,7 @@
 package com.example.sri_rejeki_app.Fragment
 
 import android.Manifest
+import android.app.AlertDialog
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
@@ -108,11 +109,44 @@ class CameraFragment : Fragment() {
                             barcode.rawValue?.let { rawValue ->
                                 if (rawValue == "presensi_sri_rejeki_trigger") {
                                     isScanned = true
-                                    // pindah ke ValidasiFragment
-                                    requireActivity().supportFragmentManager.beginTransaction()
-                                        .replace(R.id.fragment_container, ValidasiFragment())
-                                        .addToBackStack(null)
-                                        .commit()
+
+                                    // Ambil data dari shared preferences untuk mengecek login hari ini
+                                    val sharedPref = requireActivity().getSharedPreferences("user_session", android.content.Context.MODE_PRIVATE)
+                                    val username = sharedPref.getString("username", "unknown") ?: "unknown"
+                                    val todayDate = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
+
+                                    // Cek login hari ini di Firebase
+                                    val databaseRef = FirebaseDatabase.getInstance().getReference("presensi")
+                                    databaseRef.orderByChild("username").equalTo(username)
+                                        .get()
+                                        .addOnSuccessListener { snapshot ->
+                                            var sudahLoginHariIni = false
+
+                                            for (dataSnapshot in snapshot.children) {
+                                                val waktuFromDb = dataSnapshot.child("waktu").getValue(String::class.java)
+                                                if (waktuFromDb?.startsWith(todayDate) == true) {
+                                                    sudahLoginHariIni = true
+                                                    break
+                                                }
+                                            }
+
+                                            if (sudahLoginHariIni) {
+                                                // Jika sudah login hari ini, beri tahu pengguna
+                                                showAlreadyCheckedInDialog()
+                                            } else {
+                                                // Pindah ke fragment validasi jika belum login
+                                                requireActivity().supportFragmentManager.beginTransaction()
+                                                    .replace(R.id.fragment_container, ValidasiFragment())
+                                                    .addToBackStack(null)
+                                                    .commit()
+                                            }
+                                        }
+                                        .addOnFailureListener {
+                                            Log.e("QRCodeAnalyzer", "Error checking presensi", it)
+                                        }
+                                        .addOnCompleteListener {
+                                            imageProxy.close()
+                                        }
                                 }
                             }
                         }
@@ -129,8 +163,21 @@ class CameraFragment : Fragment() {
         }
     }
 
+
     override fun onDestroy() {
         super.onDestroy()
         cameraExecutor.shutdown()
+    }
+
+    private fun showAlreadyCheckedInDialog() {
+        val bindingDialog = com.example.sri_rejeki_app.databinding.DialogSudahPresensiBinding.inflate(LayoutInflater.from(requireContext()))
+        val dialog = AlertDialog.Builder(requireContext()).setView(bindingDialog.root).create()
+
+        bindingDialog.btnDialogOK.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+        dialog.show()
     }
 }
