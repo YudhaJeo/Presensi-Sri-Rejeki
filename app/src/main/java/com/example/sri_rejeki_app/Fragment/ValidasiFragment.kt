@@ -28,9 +28,9 @@ class ValidasiFragment : Fragment() {
     private lateinit var binding: FragmentValidasiBinding
     private lateinit var fusedLocationClient: FusedLocationProviderClient
 
-    // Lokasi tujuan (misalnya kantor atau lokasi absensi) -7.646193, 111.527312
-    private val targetLatitude = -7.646193 // Ganti dengan latitude yang sesuai
-    private val targetLongitude = 111.527312 // Ganti dengan longitude yang sesuai
+    // Lokasi tujuan (misalnya kantor atau lokasi absensi) -7.647303, 111.526791
+    private val targetLatitude = -7.647303 // Ganti dengan latitude yang sesuai
+    private val targetLongitude = 111.526791 // Ganti dengan longitude yang sesuai
     private val radius = 30 // radius dalam meter
 
     override fun onCreateView(
