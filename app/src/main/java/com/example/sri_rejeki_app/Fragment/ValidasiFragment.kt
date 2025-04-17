@@ -62,32 +62,29 @@ class ValidasiFragment : Fragment() {
     }
 
     private fun validasiLokasi() {
-        // Mengecek izin akses lokasi
         if (ContextCompat.checkSelfPermission(
                 requireContext(), Manifest.permission.ACCESS_FINE_LOCATION
             ) == PackageManager.PERMISSION_GRANTED) {
-            // Ambil lokasi perangkat
-            fusedLocationClient.lastLocation.addOnSuccessListener(requireActivity(), OnSuccessListener { location ->
+
+            fusedLocationClient.lastLocation.addOnSuccessListener(requireActivity()) { location ->
                 if (location != null) {
                     val userLatitude = location.latitude
                     val userLongitude = location.longitude
 
-                    // Hitung jarak antara lokasi perangkat dan lokasi target
                     val distance = hitungJarak(userLatitude, userLongitude, targetLatitude, targetLongitude)
 
                     if (distance <= radius) {
-                        // Lokasi valid, lanjutkan kirim presensi
+                        // Lokasi valid → kirim presensi
                         kirimPresensi()
                     } else {
-                        // Lokasi tidak valid, tampilkan Toast
+                        // Lokasi di luar radius → hanya tampilkan dialog, tidak kirim presensi
                         showCustomLocationDialog(distance)
                     }
                 } else {
                     Toast.makeText(requireContext(), "Gagal mendapatkan lokasi perangkat", Toast.LENGTH_SHORT).show()
                 }
-            })
+            }
         } else {
-            // Jika izin akses lokasi belum diberikan
             ActivityCompat.requestPermissions(requireActivity(), arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 1)
         }
     }

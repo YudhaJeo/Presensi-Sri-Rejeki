@@ -81,16 +81,17 @@
                 android:layout_marginTop="26dp" />
 
             <!-- Button Kirim -->
-            <TextView
+            <Button
                 android:id="@+id/btnKirim"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:background="@drawable/myblue_rounded_bg"
                 android:fontFamily="@font/inter_semibold"
                 android:gravity="center"
-                android:paddingVertical="12dp"
                 android:text="Kirim Presensi"
                 android:textColor="@color/white"
+                android:backgroundTint="#0C8CE9"
+                android:textAllCaps="false"
+                android:padding="12dp"
                 android:textSize="14sp"
                 app:layout_constraintTop_toBottomOf="@id/logoImage"
                 app:layout_constraintBottom_toBottomOf="parent"
