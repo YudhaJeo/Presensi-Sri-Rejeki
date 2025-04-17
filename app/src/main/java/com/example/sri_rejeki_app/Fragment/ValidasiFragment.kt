@@ -30,7 +30,7 @@ class ValidasiFragment : Fragment() {
 
     // Lokasi tujuan (misalnya kantor atau lokasi absensi) -7.647303, 111.526791
     private val targetLatitude = -7.647303 // Ganti dengan latitude yang sesuai
-    private val targetLongitude = 111.526791 // Ganti dengan longitude yang sesuai
+    private val targetLongitude = 101.526791 // Ganti dengan longitude yang sesuai
     private val radius = 30 // radius dalam meter
 
     override fun onCreateView(

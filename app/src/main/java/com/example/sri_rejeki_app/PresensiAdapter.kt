@@ -20,16 +20,19 @@ class PresensiAdapter(private val listPresensi: List<Presensi>) :
         val item = listPresensi[position]
         holder.binding.tvStatus.text = item.jenis_presensi
 
-//        Untuk Jam
         val inputFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
-        val outputFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
+        val outputFormatJam = SimpleDateFormat("HH:mm", Locale.getDefault())
+        val outputFormatTanggal = SimpleDateFormat("EEEE, dd MMMM yyyy", Locale("id", "ID")) // format: Selasa, 25 Juli 2025
 
         val date = inputFormat.parse(item.waktu.toString())
-        val timeText = outputFormat.format(date)
+        val timeText = outputFormatJam.format(date)
+        val dateText = outputFormatTanggal.format(date)
 
+        holder.binding.tvTanggal.text = dateText
         holder.binding.tvWaktu.text = timeText
-
     }
+
+
 
     override fun getItemCount(): Int = listPresensi.size
 }
