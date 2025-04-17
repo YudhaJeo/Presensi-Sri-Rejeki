@@ -49,13 +49,13 @@ class BuatAkunActivity : AppCompatActivity() {
     }
 
     private fun createAccount() {
+        val fullname = binding.etFullName.text.toString().trim()
         val username = binding.etNewUsername.text.toString().trim()
         val email = binding.etEmail.text.toString().trim()
         val password = binding.etNewPassword.text.toString().trim()
         val confirmPassword = binding.etConfirmPassword.text.toString().trim()
 
-        // Validasi input
-        if (username.isEmpty() || email.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
+        if (fullname.isEmpty() || username.isEmpty() || email.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
             Toast.makeText(this, "Harap lengkapi semua kolom", Toast.LENGTH_SHORT).show()
             return
         }
@@ -65,14 +65,13 @@ class BuatAkunActivity : AppCompatActivity() {
             return
         }
 
-        // Susun data dalam bentuk HashMap
         val userData = hashMapOf(
+            "fullname" to fullname,
             "username" to username,
             "email" to email,
             "password" to password
         )
 
-        // Kirim data ke node "users" di Firebase Realtime Database
         database.child("users").push()
             .setValue(userData)
             .addOnSuccessListener {
@@ -86,4 +85,5 @@ class BuatAkunActivity : AppCompatActivity() {
                 Log.e("BuatAkunActivity", "Error mengirim data akun", e)
             }
     }
+
 }

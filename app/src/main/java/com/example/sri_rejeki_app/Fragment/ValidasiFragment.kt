@@ -30,7 +30,7 @@ class ValidasiFragment : Fragment() {
 
     // Lokasi tujuan (misalnya kantor atau lokasi absensi) -7.647303, 111.526791
     private val targetLatitude = -7.647303 // Ganti dengan latitude yang sesuai
-    private val targetLongitude = 101.526791 // Ganti dengan longitude yang sesuai
+    private val targetLongitude = 111.526791 // Ganti dengan longitude yang sesuai
     private val radius = 30 // radius dalam meter
 
     override fun onCreateView(
@@ -102,35 +102,64 @@ class ValidasiFragment : Fragment() {
         showLoading(true)
 
         val sharedPref = requireActivity().getSharedPreferences("user_session", android.content.Context.MODE_PRIVATE)
-        val username = sharedPref.getString("username", "unknown")
+        val username = sharedPref.getString("username", "unknown") ?: "unknown"
 
-        val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
-        val timestamp = sdf.format(Date())
+        val sdfFull = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
+        val sdfDateOnly = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        val todayDate = sdfDateOnly.format(Date())
 
-        val dataPresensi = mapOf(
-            "username" to username,
-            "waktu" to timestamp,
-            "jenis_presensi" to "Presensi Berhasil"
-        )
+        val databaseRef = FirebaseDatabase.getInstance().getReference("presensi")
 
-        FirebaseDatabase.getInstance().getReference("presensi")
-            .push()
-            .setValue(dataPresensi)
-            .addOnSuccessListener {
-                showLoading(false)
+        // Ambil semua data presensi dan lakukan pengecekan
+        databaseRef.get().addOnSuccessListener { snapshot ->
+            var sudahPresensi = false
 
-                Log.d("ValidasiFragment", "Presensi berhasil dikirim")
-                Toast.makeText(requireContext(), "Presensi berhasil dikirim", Toast.LENGTH_SHORT).show()
+            for (dataSnapshot in snapshot.children) {
+                val userFromDb = dataSnapshot.child("username").getValue(String::class.java)
+                val waktuFromDb = dataSnapshot.child("waktu").getValue(String::class.java)
 
-                // Menutup fragment setelah presensi dikirim
-                requireActivity().supportFragmentManager.popBackStack(null, androidx.fragment.app.FragmentManager.POP_BACK_STACK_INCLUSIVE)
+                if (userFromDb == username && waktuFromDb?.startsWith(todayDate) == true) {
+                    sudahPresensi = true
+                    break
+                }
             }
-            .addOnFailureListener {
-                showLoading(false)
 
-                Log.e("ValidasiFragment", "Gagal mengirim presensi", it)
+            if (sudahPresensi) {
+                showLoading(false)
+                showAlreadyCheckedInDialog()
+
+            } else {
+                // Belum presensi → kirim data baru
+                val waktuSekarang = sdfFull.format(Date())
+
+                val dataPresensi = mapOf(
+                    "username" to username,
+                    "waktu" to waktuSekarang,
+                    "jenis_presensi" to "Presensi Berhasil"
+                )
+
+                databaseRef.push()
+                    .setValue(dataPresensi)
+                    .addOnSuccessListener {
+                        showLoading(false)
+                        Toast.makeText(requireContext(), "Presensi berhasil dikirim", Toast.LENGTH_SHORT).show()
+                        requireActivity().supportFragmentManager.popBackStack(
+                            null,
+                            androidx.fragment.app.FragmentManager.POP_BACK_STACK_INCLUSIVE
+                        )
+                    }
+                    .addOnFailureListener {
+                        showLoading(false)
+                        Toast.makeText(requireContext(), "Gagal mengirim presensi", Toast.LENGTH_SHORT).show()
+                    }
             }
+        }.addOnFailureListener {
+            showLoading(false)
+            Toast.makeText(requireContext(), "Gagal memeriksa presensi", Toast.LENGTH_SHORT).show()
+            Log.e("ValidasiFragment", "Error checking presensi", it)
+        }
     }
+
 
     private fun showCustomLocationDialog(distance: Float) {
         val bindingDialog = DialogLokasiTidakValidBinding.inflate(LayoutInflater.from(requireContext()))
@@ -138,6 +167,18 @@ class ValidasiFragment : Fragment() {
 
         bindingDialog.tvDialogMessage.text =
             "Anda berada di luar radius absensi.\nJarak saat ini: ${"%.2f".format(distance)} meter."
+
+        bindingDialog.btnDialogOK.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+        dialog.show()
+    }
+
+    private fun showAlreadyCheckedInDialog() {
+        val bindingDialog = com.example.sri_rejeki_app.databinding.DialogSudahPresensiBinding.inflate(LayoutInflater.from(requireContext()))
+        val dialog = AlertDialog.Builder(requireContext()).setView(bindingDialog.root).create()
 
         bindingDialog.btnDialogOK.setOnClickListener {
             dialog.dismiss()
