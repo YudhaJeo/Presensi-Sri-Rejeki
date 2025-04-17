@@ -60,8 +60,41 @@ class BuatAkunActivity : AppCompatActivity() {
             return
         }
 
+        // Memeriksa apakah password dan konfirmasi password cocok
+        if (password != confirmPassword) {
+            Toast.makeText(this, "Password dan konfirmasi password tidak cocok", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        // Memeriksa kekuatan password
+        if (!isPasswordStrong(password)) {
+            Toast.makeText(this, "Password harus memiliki minimal 8 karakter, mengandung huruf besar, angka, dan karakter khusus", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        // Memeriksa format email
+        if (!isEmailValid(email)) {
+            Toast.makeText(this, "Email tidak valid", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        // Lanjutkan dengan proses registrasi atau logika lainnya
+
+        // Fungsi untuk memeriksa kekuatan password
+        fun isPasswordStrong(password: String): Boolean {
+            val regex = "^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%^&*(),.?\":{}|<>]).{8,}\$".toRegex()
+            return password.matches(regex)
+        }
+
+
         if (password != confirmPassword) {
             Toast.makeText(this, "Password tidak cocok", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        // Memeriksa kekuatan password
+        if (!isPasswordStrong(password)) {
+            Toast.makeText(this, "Password harus memiliki minimal 8 karakter, mengandung huruf besar, angka, dan karakter khusus", Toast.LENGTH_SHORT).show()
             return
         }
 
@@ -84,6 +117,18 @@ class BuatAkunActivity : AppCompatActivity() {
                 Toast.makeText(this, "Gagal membuat akun: ${e.message}", Toast.LENGTH_SHORT).show()
                 Log.e("BuatAkunActivity", "Error mengirim data akun", e)
             }
+    }
+
+    // Fungsi untuk memeriksa kekuatan password
+    fun isPasswordStrong(password: String): Boolean {
+        val regex = "^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%^&*(),.?\":{}|<>]).{8,}\$".toRegex()
+        return password.matches(regex)
+    }
+
+    // Fungsi untuk memeriksa apakah email valid
+    fun isEmailValid(email: String): Boolean {
+        val regex = "^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$".toRegex()
+        return email.matches(regex)
     }
 
 }
