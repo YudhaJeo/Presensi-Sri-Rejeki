@@ -1,4 +1,4 @@
-package com.example.sri_rejeki_app
+package com.example.sri_rejeki_app.Dashboard
 
 data class Presensi(
     var fullname: String? = null,

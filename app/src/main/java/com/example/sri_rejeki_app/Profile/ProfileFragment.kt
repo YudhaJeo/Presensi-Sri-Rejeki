@@ -1,4 +1,4 @@
-package com.example.sri_rejeki_app.Fragment
+package com.example.sri_rejeki_app.Profile
 
 import android.content.Intent
 import android.os.Bundle

@@ -1,6 +1,5 @@
-package com.example.sri_rejeki_app
+package com.example.sri_rejeki_app.Dashboard
 
-import PresensiAdapter
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -8,7 +7,8 @@ import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.sri_rejeki_app.databinding.ActivityMainBinding
 import com.example.sri_rejeki_app.Fragment.CameraFragment
-import com.example.sri_rejeki_app.Fragment.ProfileFragment
+import com.example.sri_rejeki_app.Profile.ProfileFragment
+import com.example.sri_rejeki_app.R
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 
