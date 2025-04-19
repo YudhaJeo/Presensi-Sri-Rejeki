@@ -1,15 +1,14 @@
 package com.example.sri_rejeki_app
 
 import PresensiAdapter
-import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.sri_rejeki_app.Login.LoginActivity
 import com.example.sri_rejeki_app.databinding.ActivityMainBinding
 import com.example.sri_rejeki_app.Fragment.CameraFragment
+import com.example.sri_rejeki_app.Fragment.ProfileFragment
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 
@@ -18,7 +17,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var firebaseAuth: FirebaseAuth
 
-//    Prepare Recycle View
+    // Prepare Recycle View
     private lateinit var presensiAdapter: PresensiAdapter
     private val listPresensi = mutableListOf<Presensi>()
 
@@ -27,9 +26,6 @@ class MainActivity : AppCompatActivity() {
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        //        animasi loading
-//        showLoading(true)
 
         firebaseAuth = FirebaseAuth.getInstance()
 
@@ -51,19 +47,18 @@ class MainActivity : AppCompatActivity() {
         binding.ivButtonScan.setOnClickListener {
             val fragment = CameraFragment()
             val transaction: FragmentTransaction = supportFragmentManager.beginTransaction()
-            transaction.replace(R.id.camera_fragment, fragment)
+            transaction.replace(R.id.container_fragment, fragment)
             transaction.addToBackStack(null)
             transaction.commit()
         }
 
         // Logout
-        binding.btnLogout.setOnClickListener {
-            firebaseAuth.signOut()
-            sharedPref.edit().clear().apply()
-
-            val intent = Intent(this, LoginActivity::class.java)
-            startActivity(intent)
-            finish()
+        binding.btnProfile.setOnClickListener {
+            val fragment = ProfileFragment()
+            val transaction = supportFragmentManager.beginTransaction()
+            transaction.replace(R.id.container_fragment, fragment)
+            transaction.addToBackStack(null)
+            transaction.commit()
         }
     }
 
@@ -93,4 +88,3 @@ class MainActivity : AppCompatActivity() {
         binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
     }
 }
-
