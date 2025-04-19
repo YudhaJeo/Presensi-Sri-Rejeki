@@ -38,16 +38,16 @@ class LoginActivity : AppCompatActivity() {
                         for (userSnapshot in snapshot.children) {
                             val dbPassword = userSnapshot.child("password").getValue(String::class.java)
                             if (password == dbPassword) {
-                                // Ambil data tambahan (misalnya email dan fullName)
+                                // Ambil data tambahan (misalnya email dan fullname)
                                 val email = userSnapshot.child("email").getValue(String::class.java)
-                                val fullName = userSnapshot.child("fullName").getValue(String::class.java)
+                                val fullname = userSnapshot.child("fullname").getValue(String::class.java)
 
                                 // Simpan sesi login lengkap ke SharedPreferences
                                 val sharedPref = getSharedPreferences("user_session", MODE_PRIVATE)
                                 sharedPref.edit()
                                     .putString("username", username)
                                     .putString("email", email)
-                                    .putString("fullName", fullName)
+                                    .putString("fullname", fullname)
                                     .apply()
 
                                 Toast.makeText(this@LoginActivity, "Login berhasil", Toast.LENGTH_SHORT).show()

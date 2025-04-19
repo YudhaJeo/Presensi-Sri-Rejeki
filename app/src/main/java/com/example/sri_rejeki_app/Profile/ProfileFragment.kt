@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import com.example.sri_rejeki_app.Login.LoginActivity
 import com.example.sri_rejeki_app.databinding.FragmentProfileBinding
 import com.google.firebase.auth.FirebaseAuth
@@ -28,7 +29,18 @@ class ProfileFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         firebaseAuth = FirebaseAuth.getInstance()
-        val sharedPref = requireActivity().getSharedPreferences("user_session", MODE_PRIVATE)
+
+        // ambil data user dari shared preferences
+        val sharedPref = requireActivity().getSharedPreferences("user_session", AppCompatActivity.MODE_PRIVATE)
+        val username = sharedPref.getString("username", "unknown")
+        val email = sharedPref.getString("email", "unknown")
+        val fullname = sharedPref.getString("fullname", "unknown")
+
+        // tampilkan ke layout
+        binding.tvNamaLengkap.text = fullname
+        binding.tvEmail.text = email
+        binding.tvUsername.text = username
+
 
         binding.btnLogout.setOnClickListener {
             firebaseAuth.signOut()

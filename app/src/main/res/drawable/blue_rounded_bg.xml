@@ -1,4 +1,4 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
     <solid android:color="@color/myBlueBg"/>
-    <corners android:radius="4dp"/> <!-- Sudut melengkung -->
+    <corners android:radius="8dp"/> <!-- Sudut melengkung -->
 </shape>

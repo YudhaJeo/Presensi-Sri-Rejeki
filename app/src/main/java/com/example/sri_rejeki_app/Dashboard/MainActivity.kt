@@ -32,15 +32,15 @@ class MainActivity : AppCompatActivity() {
         val sharedPref = getSharedPreferences("user_session", MODE_PRIVATE)
 
         // Set nama user
-        val fullname = sharedPref.getString("username", "User")
-        binding.tvHalo.text = "Hai, $fullname!"
+        val username = sharedPref.getString("username", "User")
+        binding.tvHalo.text = "Hai, $username!"
 
         // Setup RecyclerView
         binding.rvRiwayatPresensi.layoutManager = LinearLayoutManager(this)
         presensiAdapter = PresensiAdapter(listPresensi)
         binding.rvRiwayatPresensi.adapter = presensiAdapter
 
-        loadPresensiFromFirebase(fullname.toString())
+        loadPresensiFromFirebase(username.toString())
         showLoading(false)
 
         // Kamera Fragment
@@ -62,9 +62,9 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun loadPresensiFromFirebase(fullname: String) {
+    private fun loadPresensiFromFirebase(username: String) {
         val ref = FirebaseDatabase.getInstance().getReference("presensi")
-        ref.orderByChild("username").equalTo(fullname)
+        ref.orderByChild("username").equalTo(username)
             .addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     listPresensi.clear()
