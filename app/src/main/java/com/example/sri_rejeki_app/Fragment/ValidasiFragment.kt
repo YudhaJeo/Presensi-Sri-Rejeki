@@ -189,14 +189,14 @@ class ValidasiFragment : Fragment() {
         val bindingDialog = com.example.sri_rejeki_app.databinding.DialogBerhasilPresensiBinding.inflate(LayoutInflater.from(requireContext()))
         val dialog = AlertDialog.Builder(requireContext()).setView(bindingDialog.root).create()
 
-        bindingDialog.btnDialogOK.setOnClickListener {
-            dialog.dismiss()
-            // Tutup semua fragment langsung jika user pencet OK
-            requireActivity().supportFragmentManager.popBackStack(
-                null,
-                androidx.fragment.app.FragmentManager.POP_BACK_STACK_INCLUSIVE
-            )
-        }
+//        bindingDialog.btnDialogOK.setOnClickListener {
+//            dialog.dismiss()
+//            // Tutup semua fragment langsung jika user pencet OK
+//            requireActivity().supportFragmentManager.popBackStack(
+//                null,
+//                androidx.fragment.app.FragmentManager.POP_BACK_STACK_INCLUSIVE
+//            )
+//        }
 
         dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
         dialog.show()

@@ -1,11 +1,13 @@
 package com.example.sri_rejeki_app.Profile
 
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.example.sri_rejeki_app.Login.LoginActivity
 import com.example.sri_rejeki_app.databinding.FragmentProfileBinding
@@ -16,6 +18,7 @@ class ProfileFragment : Fragment() {
 
     private lateinit var binding: FragmentProfileBinding
     private lateinit var firebaseAuth: FirebaseAuth
+    private lateinit var sharedPref: SharedPreferences
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -29,9 +32,9 @@ class ProfileFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         firebaseAuth = FirebaseAuth.getInstance()
+        sharedPref = requireActivity().getSharedPreferences("user_session", AppCompatActivity.MODE_PRIVATE)
 
         // ambil data user dari shared preferences
-        val sharedPref = requireActivity().getSharedPreferences("user_session", AppCompatActivity.MODE_PRIVATE)
         val username = sharedPref.getString("username", "unknown")
         val email = sharedPref.getString("email", "unknown")
         val fullname = sharedPref.getString("fullname", "unknown")
@@ -43,16 +46,32 @@ class ProfileFragment : Fragment() {
 
 
         binding.btnLogout.setOnClickListener {
+            showLogoutDalog()
+        }
+
+        binding.btnBack.setOnClickListener{
+            requireActivity().supportFragmentManager.popBackStack()
+        }
+    }
+
+    private fun showLogoutDalog() {
+        val bindingDialog = com.example.sri_rejeki_app.databinding.DialogLogoutBinding.inflate(LayoutInflater.from(requireContext()))
+        val dialog = AlertDialog.Builder(requireContext()).setView(bindingDialog.root).create()
+
+        bindingDialog.btnDialogCancel.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        bindingDialog.btnDialogLogout.setOnClickListener {
             firebaseAuth.signOut()
-            sharedPref.edit().clear().apply()
+            sharedPref.edit().clear().apply() // ⬅️ udah bisa dipanggil karena di-declare global
 
             val intent = Intent(requireContext(), LoginActivity::class.java)
             startActivity(intent)
             requireActivity().finish()
         }
 
-        binding.btnBack.setOnClickListener{
-            requireActivity().supportFragmentManager.popBackStack()
-        }
+        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+        dialog.show()
     }
 }
