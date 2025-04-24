@@ -1,12 +1,18 @@
 package com.example.sri_rejeki_app.Login
 
+import android.content.Context
 import android.content.Intent
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.example.sri_rejeki_app.R
 import com.example.sri_rejeki_app.databinding.ActivityBuatAkunBinding
 import com.google.firebase.FirebaseApp
 import com.google.firebase.database.DatabaseReference
@@ -16,33 +22,32 @@ class BuatAkunActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityBuatAkunBinding
     private lateinit var database: DatabaseReference
+    private var internetDialog: AlertDialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         FirebaseApp.initializeApp(this)
 
-        // Inisialisasi View Binding
         binding = ActivityBuatAkunBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Mengatur agar isi tampilan tidak terpotong oleh system bars
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(android.R.id.content)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
 
-        // Inisialisasi Firebase Realtime Database
         database = FirebaseDatabase.getInstance().reference
 
-        // Tombol untuk mengirim data pembuatan akun
         binding.btnCreateAccount.setOnClickListener {
+            if (!isConnected()) {
+                showInternetDialog()
+                return@setOnClickListener
+            }
             createAccount()
         }
 
-        // TextView untuk pindah ke halaman login
         binding.tvLoginInstead.setOnClickListener {
-            // Pindah ke LoginActivity
             startActivity(Intent(this, LoginActivity::class.java))
             finish()
         }
@@ -60,41 +65,18 @@ class BuatAkunActivity : AppCompatActivity() {
             return
         }
 
-        // Memeriksa apakah password dan konfirmasi password cocok
         if (password != confirmPassword) {
             Toast.makeText(this, "Password dan konfirmasi password tidak cocok", Toast.LENGTH_SHORT).show()
             return
         }
 
-        // Memeriksa kekuatan password
         if (!isPasswordStrong(password)) {
             Toast.makeText(this, "Password harus memiliki minimal 8 karakter, mengandung huruf besar, angka, dan karakter khusus", Toast.LENGTH_SHORT).show()
             return
         }
 
-        // Memeriksa format email
         if (!isEmailValid(email)) {
             Toast.makeText(this, "Email tidak valid", Toast.LENGTH_SHORT).show()
-            return
-        }
-
-        // Lanjutkan dengan proses registrasi atau logika lainnya
-
-        // Fungsi untuk memeriksa kekuatan password
-        fun isPasswordStrong(password: String): Boolean {
-            val regex = "^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%^&*(),.?\":{}|<>]).{8,}\$".toRegex()
-            return password.matches(regex)
-        }
-
-
-        if (password != confirmPassword) {
-            Toast.makeText(this, "Password tidak cocok", Toast.LENGTH_SHORT).show()
-            return
-        }
-
-        // Memeriksa kekuatan password
-        if (!isPasswordStrong(password)) {
-            Toast.makeText(this, "Password harus memiliki minimal 8 karakter, mengandung huruf besar, angka, dan karakter khusus", Toast.LENGTH_SHORT).show()
             return
         }
 
@@ -119,16 +101,38 @@ class BuatAkunActivity : AppCompatActivity() {
             }
     }
 
-    // Fungsi untuk memeriksa kekuatan password
-    fun isPasswordStrong(password: String): Boolean {
+    private fun isPasswordStrong(password: String): Boolean {
         val regex = "^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%^&*(),.?\":{}|<>]).{8,}\$".toRegex()
         return password.matches(regex)
     }
 
-    // Fungsi untuk memeriksa apakah email valid
-    fun isEmailValid(email: String): Boolean {
+    private fun isEmailValid(email: String): Boolean {
         val regex = "^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$".toRegex()
         return email.matches(regex)
     }
 
+    private fun isConnected(): Boolean {
+        val cm = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val network = cm.activeNetwork ?: return false
+        val capabilities = cm.getNetworkCapabilities(network) ?: return false
+        return capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
+    }
+
+    private fun showInternetDialog() {
+        if (internetDialog?.isShowing == true) return
+
+        val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_masalah_koneksi, null)
+
+        internetDialog = AlertDialog.Builder(this)
+            .setView(dialogView)
+            .setCancelable(true) // Bisa ditutup dengan klik di luar
+            .create()
+
+        internetDialog?.show()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        internetDialog?.dismiss()
+    }
 }

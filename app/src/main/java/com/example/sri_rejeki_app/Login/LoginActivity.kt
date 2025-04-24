@@ -1,11 +1,16 @@
 package com.example.sri_rejeki_app.Login
 
-import android.content.Intent
+import android.content.*
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import com.example.sri_rejeki_app.Dashboard.MainActivity
+import com.example.sri_rejeki_app.MainActivity
+import com.example.sri_rejeki_app.R
 import com.example.sri_rejeki_app.databinding.ActivityLoginBinding
 import com.google.firebase.database.*
 
@@ -13,16 +18,23 @@ class LoginActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityLoginBinding
     private lateinit var database: DatabaseReference
+    private var internetDialog: AlertDialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Inisialisasi Firebase
+        // Firebase setup
         database = FirebaseDatabase.getInstance().reference
 
+        // Tombol login
         binding.btnLogin.setOnClickListener {
+            if (!isInternetAvailable()) {
+                showInternetDialog()
+                return@setOnClickListener
+            }
+
             val username = binding.etUsername.text.toString().trim()
             val password = binding.etPassword.text.toString().trim()
 
@@ -38,21 +50,17 @@ class LoginActivity : AppCompatActivity() {
                         for (userSnapshot in snapshot.children) {
                             val dbPassword = userSnapshot.child("password").getValue(String::class.java)
                             if (password == dbPassword) {
-                                // Ambil data tambahan (misalnya email dan fullname)
                                 val email = userSnapshot.child("email").getValue(String::class.java)
-                                val fullname = userSnapshot.child("fullname").getValue(String::class.java)
+                                val fullName = userSnapshot.child("fullname").getValue(String::class.java)
 
-                                // Simpan sesi login lengkap ke SharedPreferences
                                 val sharedPref = getSharedPreferences("user_session", MODE_PRIVATE)
                                 sharedPref.edit()
                                     .putString("username", username)
                                     .putString("email", email)
-                                    .putString("fullname", fullname)
+                                    .putString("fullName", fullName)
                                     .apply()
 
                                 Toast.makeText(this@LoginActivity, "Login berhasil", Toast.LENGTH_SHORT).show()
-
-                                // Pindah ke MainActivity
                                 startActivity(Intent(this@LoginActivity, MainActivity::class.java))
                                 finish()
                             } else {
@@ -71,6 +79,7 @@ class LoginActivity : AppCompatActivity() {
             })
         }
 
+        // Link ke Buat Akun
         binding.tvCreateAccount.setOnClickListener {
             val intent = Intent(this, BuatAkunActivity::class.java)
             startActivity(intent)
@@ -79,14 +88,33 @@ class LoginActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-
         val sharedPref = getSharedPreferences("user_session", MODE_PRIVATE)
         val savedUsername = sharedPref.getString("username", null)
 
         if (!savedUsername.isNullOrEmpty()) {
-            // Jika sesi login masih ada, langsung ke MainActivity
             startActivity(Intent(this, MainActivity::class.java))
             finish()
         }
     }
+
+    private fun isInternetAvailable(): Boolean {
+        val connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val network = connectivityManager.activeNetwork ?: return false
+        val capabilities = connectivityManager.getNetworkCapabilities(network) ?: return false
+        return capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
+    }
+
+    private fun showInternetDialog() {
+        if (internetDialog?.isShowing == true) return
+
+        val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_masalah_koneksi, null)
+
+        internetDialog = AlertDialog.Builder(this)
+            .setView(dialogView)
+            .setCancelable(true) // ← Ini memungkinkan menutup dialog jika klik di luar
+            .create()
+
+        internetDialog?.show()
+    }
+
 }
