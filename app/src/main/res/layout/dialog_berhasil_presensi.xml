@@ -34,13 +34,13 @@
         android:textSize="16sp"
         android:layout_marginTop="4dp" />
 
-    <Button
-        android:id="@+id/btnDialogOK"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Terima Kasih"
-        android:backgroundTint="@color/myBlue"
-        android:textColor="@android:color/white"
-        android:layout_marginTop="16dp" />
+<!--    <Button-->
+<!--        android:id="@+id/btnDialogOK"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="Terima Kasih"-->
+<!--        android:backgroundTint="@color/myBlue"-->
+<!--        android:textColor="@android:color/white"-->
+<!--        android:layout_marginTop="16dp" />-->
 
 </LinearLayout>

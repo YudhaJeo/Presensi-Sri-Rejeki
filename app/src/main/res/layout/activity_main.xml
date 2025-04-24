@@ -5,15 +5,15 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="MainActivity"
+    tools:context=".Dashboard.MainActivity"
     android:background="@color/myBlue">
 
     <ImageView
-        android:id="@+id/btnLogout"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
+        android:id="@+id/btnProfile"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
         android:contentDescription="Back"
-        android:src="@drawable/logout_circle_line"
+        android:src="@drawable/user_icon"
         app:layout_constraintBottom_toBottomOf="@+id/tvHalo"
         app:layout_constraintEnd_toStartOf="@+id/guidelineEnd"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -70,7 +70,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/inter_regular"
         android:textColor="@color/white"
-        android:text="Mau presensi ya? Klik icon kamera dibawah ini ya!"
+        android:text="Mau presensi ya? Klik icon QR dibawah ini ya!"
         android:textSize="12sp"
         app:layout_constraintStart_toStartOf="@+id/guidelineStart"
         app:layout_constraintTop_toBottomOf="@+id/tvHalo" />
@@ -156,11 +156,6 @@
         app:srcCompat="@drawable/cam_button"
         android:layout_marginBottom="10dp"/>
 
-    <FrameLayout
-        android:id="@+id/camera_fragment"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-
     <ProgressBar
         android:id="@+id/progressBar"
         style="@android:style/Widget.DeviceDefault.Light.ProgressBar.Large"
@@ -173,6 +168,11 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:elevation="10dp" />
+
+    <FrameLayout
+        android:id="@+id/container_fragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
