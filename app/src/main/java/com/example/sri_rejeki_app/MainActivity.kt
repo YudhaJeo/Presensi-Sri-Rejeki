@@ -1,9 +1,16 @@
 package com.example.sri_rejeki_app
 
 import PresensiAdapter
+import android.app.Dialog
+import android.content.Context
 import android.content.Intent
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.os.Bundle
+import android.os.Handler
 import android.view.View
+import android.view.Window
+import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -18,9 +25,21 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var firebaseAuth: FirebaseAuth
 
-//    Prepare Recycle View
     private lateinit var presensiAdapter: PresensiAdapter
     private val listPresensi = mutableListOf<Presensi>()
+
+    private var noInternetDialog: Dialog? = null
+    private val internetCheckHandler = Handler()
+    private val internetCheckRunnable = object : Runnable {
+        override fun run() {
+            if (!isInternetAvailable(this@MainActivity)) {
+                showNoInternetDialog()
+            } else {
+                hideNoInternetDialog()
+            }
+            internetCheckHandler.postDelayed(this, 3000)
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,14 +47,9 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        //        animasi loading
-//        showLoading(true)
-
         firebaseAuth = FirebaseAuth.getInstance()
 
         val sharedPref = getSharedPreferences("user_session", MODE_PRIVATE)
-
-        // Set nama user
         val fullname = sharedPref.getString("username", "User")
         binding.tvHalo.text = "Hai, $fullname!"
 
@@ -65,6 +79,9 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
             finish()
         }
+
+        // Mulai pengecekan koneksi internet
+        internetCheckHandler.post(internetCheckRunnable)
     }
 
     private fun loadPresensiFromFirebase(fullname: String) {
@@ -78,19 +95,54 @@ class MainActivity : AppCompatActivity() {
                         item?.let { listPresensi.add(it) }
                     }
                     presensiAdapter.notifyDataSetChanged()
-//                    showLoading(false) // <--- pindahkan ke sini
                 }
 
                 override fun onCancelled(error: DatabaseError) {
-//                    showLoading(false) // tetap jaga ini juga
+                    // Handle error if needed
                 }
             })
     }
 
-
-    //    Progress bar
     private fun showLoading(isLoading: Boolean) {
         binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
     }
-}
 
+    private fun isInternetAvailable(context: Context): Boolean {
+        val connectivityManager =
+            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val activeNetwork = connectivityManager.activeNetwork
+        val networkCapabilities = connectivityManager.getNetworkCapabilities(activeNetwork)
+        return networkCapabilities != null &&
+                networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
+    }
+
+    private fun showNoInternetDialog() {
+        if (noInternetDialog == null) {
+            noInternetDialog = Dialog(this)
+            noInternetDialog?.requestWindowFeature(Window.FEATURE_NO_TITLE)
+            noInternetDialog?.setContentView(R.layout.dialog_masalah_koneksi)
+            noInternetDialog?.setCancelable(false)
+            noInternetDialog?.window?.setLayout(
+                WindowManager.LayoutParams.WRAP_CONTENT,
+                WindowManager.LayoutParams.WRAP_CONTENT
+            )
+
+            noInternetDialog?.findViewById<View>(R.id.btnDialogOK)?.setOnClickListener {
+                noInternetDialog?.dismiss()
+            }
+        }
+
+        if (!noInternetDialog!!.isShowing) {
+            noInternetDialog?.show()
+        }
+    }
+
+    private fun hideNoInternetDialog() {
+        noInternetDialog?.dismiss()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        internetCheckHandler.removeCallbacks(internetCheckRunnable)
+    }
+}
