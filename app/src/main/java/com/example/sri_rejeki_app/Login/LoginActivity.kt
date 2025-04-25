@@ -9,7 +9,7 @@ import android.view.LayoutInflater
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import com.example.sri_rejeki_app.MainActivity
+import com.example.sri_rejeki_app.Dashboard.MainActivity
 import com.example.sri_rejeki_app.R
 import com.example.sri_rejeki_app.databinding.ActivityLoginBinding
 import com.google.firebase.database.*

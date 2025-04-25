@@ -1,5 +1,9 @@
 package com.example.sri_rejeki_app.Dashboard
 
+import android.app.Dialog
+import android.content.Context
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.os.Bundle
 import android.os.Handler
 import android.view.View
@@ -14,6 +18,8 @@ import com.example.sri_rejeki_app.Profile.ProfileFragment
 import com.example.sri_rejeki_app.R
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 class MainActivity : AppCompatActivity() {
 
@@ -94,15 +100,20 @@ class MainActivity : AppCompatActivity() {
                         val item = data.getValue(Presensi::class.java)
                         item?.let { listPresensi.add(it) }
                     }
+
+                    // urutkan dari yang terbaru (waktu paling akhir)
+                    val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
+                    listPresensi.sortByDescending {
+                        dateFormat.parse(it.waktu)
+                    }
+
                     presensiAdapter.notifyDataSetChanged()
-//                    showLoading(false) // <--- pindahkan ke sini
                 }
 
-                override fun onCancelled(error: DatabaseError) {
-//                    showLoading(false) // tetap jaga ini juga
-                }
+                override fun onCancelled(error: DatabaseError) {}
             })
     }
+
 
 
     //    Progress bar
