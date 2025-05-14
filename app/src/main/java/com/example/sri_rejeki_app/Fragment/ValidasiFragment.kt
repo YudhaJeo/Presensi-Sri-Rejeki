@@ -139,6 +139,27 @@ class ValidasiFragment : Fragment() {
                     .setValue(dataPresensi)
                     .addOnSuccessListener {
                         showLoading(false)
+
+                        // ==== Tambahan logika pengecekan dan update ke path gaji ====
+                        val gajiRef = FirebaseDatabase.getInstance().getReference("gaji").child(username)
+
+                        gajiRef.get().addOnSuccessListener { snapshotGaji ->
+                            if (snapshotGaji.exists()) {
+                                // Data gaji sudah ada, tambahkan totalPresensi +1
+                                val currentPresensi = snapshotGaji.child("totalPresensi").getValue(Int::class.java) ?: 0
+                                gajiRef.child("totalPresensi").setValue(currentPresensi + 1)
+                            } else {
+                                // Data gaji belum ada, buat baru
+                                val fullname = sharedPref.getString("fullName", "User") ?: "User"
+                                val dataGaji = mapOf(
+                                    "username" to username,
+                                    "fullname" to fullname,
+                                    "totalPresensi" to 1
+                                )
+                                gajiRef.setValue(dataGaji)
+                            }
+                        }
+
                         showSuccessCheckInDialogAndClose()
                     }
                     .addOnFailureListener {
@@ -152,6 +173,7 @@ class ValidasiFragment : Fragment() {
             Log.e("ValidasiFragment", "Error checking presensi", it)
         }
     }
+
 
 
     private fun showCustomLocationDialog(distance: Float) {
@@ -189,14 +211,6 @@ class ValidasiFragment : Fragment() {
         val bindingDialog = com.example.sri_rejeki_app.databinding.DialogBerhasilPresensiBinding.inflate(LayoutInflater.from(requireContext()))
         val dialog = AlertDialog.Builder(requireContext()).setView(bindingDialog.root).create()
 
-//        bindingDialog.btnDialogOK.setOnClickListener {
-//            dialog.dismiss()
-//            // Tutup semua fragment langsung jika user pencet OK
-//            requireActivity().supportFragmentManager.popBackStack(
-//                null,
-//                androidx.fragment.app.FragmentManager.POP_BACK_STACK_INCLUSIVE
-//            )
-//        }
 
         dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
         dialog.show()
