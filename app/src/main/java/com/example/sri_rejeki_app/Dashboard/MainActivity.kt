@@ -1,5 +1,9 @@
 package com.example.sri_rejeki_app.Dashboard
 
+import android.app.Dialog
+import android.content.Context
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.os.Bundle
 import android.os.Handler
 import android.view.View
