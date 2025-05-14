@@ -43,21 +43,28 @@ class LoginActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
+            // Menampilkan ProgressBar
+            binding.progressBar.visibility = android.view.View.VISIBLE
+            binding.frameProgress.visibility = android.view.View.VISIBLE
+
             val query = database.child("users").orderByChild("username").equalTo(username)
             query.addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
+                    // Menyembunyikan ProgressBar
+                    binding.progressBar.visibility = android.view.View.GONE
+
                     if (snapshot.exists()) {
                         for (userSnapshot in snapshot.children) {
                             val dbPassword = userSnapshot.child("password").getValue(String::class.java)
                             if (password == dbPassword) {
                                 val email = userSnapshot.child("email").getValue(String::class.java)
-                                val fullName = userSnapshot.child("fullname").getValue(String::class.java)
+                                val fullname = userSnapshot.child("fullname").getValue(String::class.java)
 
                                 val sharedPref = getSharedPreferences("user_session", MODE_PRIVATE)
                                 sharedPref.edit()
                                     .putString("username", username)
                                     .putString("email", email)
-                                    .putString("fullName", fullName)
+                                    .putString("fullname", fullname)
                                     .apply()
 
                                 Toast.makeText(this@LoginActivity, "Login berhasil", Toast.LENGTH_SHORT).show()
@@ -73,16 +80,13 @@ class LoginActivity : AppCompatActivity() {
                 }
 
                 override fun onCancelled(error: DatabaseError) {
+                    // Menyembunyikan ProgressBar
+                    binding.progressBar.visibility = android.view.View.GONE
+
                     Toast.makeText(this@LoginActivity, "Error: ${error.message}", Toast.LENGTH_SHORT).show()
                     Log.e("LoginActivity", "Database error: ${error.message}")
                 }
             })
-        }
-
-        // Link ke Buat Akun
-        binding.tvCreateAccount.setOnClickListener {
-            val intent = Intent(this, BuatAkunActivity::class.java)
-            startActivity(intent)
         }
     }
 

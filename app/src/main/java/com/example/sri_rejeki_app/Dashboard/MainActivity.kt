@@ -6,6 +6,7 @@ import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import android.view.View
 import android.view.Window
 import android.view.WindowManager
@@ -119,6 +120,7 @@ class MainActivity : AppCompatActivity() {
     //    Progress bar
     private fun showLoading(isLoading: Boolean) {
         binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
+        binding.frameProgress.visibility = if (isLoading) View.VISIBLE else View.GONE
     }
 
     private fun isInternetAvailable(context: Context): Boolean {
