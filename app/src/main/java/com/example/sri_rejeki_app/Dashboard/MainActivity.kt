@@ -120,6 +120,7 @@ class MainActivity : AppCompatActivity() {
     //    Progress bar
     private fun showLoading(isLoading: Boolean) {
         binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
+        binding.frameProgress.visibility = if (isLoading) View.VISIBLE else View.GONE
     }
 
     private fun isInternetAvailable(context: Context): Boolean {
