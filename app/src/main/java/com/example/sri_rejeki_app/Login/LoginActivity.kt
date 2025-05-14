@@ -43,9 +43,16 @@ class LoginActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
+            // Menampilkan ProgressBar
+            binding.progressBar.visibility = android.view.View.VISIBLE
+            binding.frameProgress.visibility = android.view.View.VISIBLE
+
             val query = database.child("users").orderByChild("username").equalTo(username)
             query.addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
+                    // Menyembunyikan ProgressBar
+                    binding.progressBar.visibility = android.view.View.GONE
+
                     if (snapshot.exists()) {
                         for (userSnapshot in snapshot.children) {
                             val dbPassword = userSnapshot.child("password").getValue(String::class.java)
@@ -73,12 +80,14 @@ class LoginActivity : AppCompatActivity() {
                 }
 
                 override fun onCancelled(error: DatabaseError) {
+                    // Menyembunyikan ProgressBar
+                    binding.progressBar.visibility = android.view.View.GONE
+
                     Toast.makeText(this@LoginActivity, "Error: ${error.message}", Toast.LENGTH_SHORT).show()
                     Log.e("LoginActivity", "Database error: ${error.message}")
                 }
             })
         }
-
     }
 
     override fun onStart() {
