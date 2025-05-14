@@ -33,7 +33,5 @@ class PresensiAdapter(private val listPresensi: List<Presensi>) :
         holder.binding.tvWaktu.text = timeText
     }
 
-
-
     override fun getItemCount(): Int = listPresensi.size
 }

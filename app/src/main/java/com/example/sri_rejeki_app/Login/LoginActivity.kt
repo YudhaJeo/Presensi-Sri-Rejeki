@@ -51,13 +51,13 @@ class LoginActivity : AppCompatActivity() {
                             val dbPassword = userSnapshot.child("password").getValue(String::class.java)
                             if (password == dbPassword) {
                                 val email = userSnapshot.child("email").getValue(String::class.java)
-                                val fullName = userSnapshot.child("fullname").getValue(String::class.java)
+                                val fullname = userSnapshot.child("fullname").getValue(String::class.java)
 
                                 val sharedPref = getSharedPreferences("user_session", MODE_PRIVATE)
                                 sharedPref.edit()
                                     .putString("username", username)
                                     .putString("email", email)
-                                    .putString("fullName", fullName)
+                                    .putString("fullname", fullname)
                                     .apply()
 
                                 Toast.makeText(this@LoginActivity, "Login berhasil", Toast.LENGTH_SHORT).show()
@@ -79,11 +79,6 @@ class LoginActivity : AppCompatActivity() {
             })
         }
 
-        // Link ke Buat Akun
-        binding.tvCreateAccount.setOnClickListener {
-            val intent = Intent(this, BuatAkunActivity::class.java)
-            startActivity(intent)
-        }
     }
 
     override fun onStart() {
